@@ -1,0 +1,1175 @@
+<!DOCTYPE html><html class="" lang="fr"><head><script type="text/javascript" class="silex-json-styles" data-silex-static="">
+    window.silex = window.silex || {}
+    window.silex.data = {"site":{"width":1400},"pages":[{"id":"page-home","displayName":"Home","link":{"linkType":"LinkTypePage","href":"#!page-home"},"canDelete":true,"canProperties":true,"canMove":true,"canRename":true,"opened":false},{"id":"page-3eme","displayName":"3eme","link":{"linkType":"LinkTypePage","href":"#!page-3eme"},"canDelete":true,"canRename":true,"canMove":true,"canProperties":true,"opened":false},{"id":"page-2nde","displayName":"2nde","link":{"linkType":"LinkTypePage","href":"#!page-2nde"},"canDelete":true,"canRename":true,"canMove":true,"canProperties":true,"opened":false},{"id":"page-1ere","displayName":"1ere","link":{"linkType":"LinkTypePage","href":"#!page-1ere"},"canDelete":true,"canRename":true,"canMove":true,"canProperties":true,"opened":false},{"id":"page-term","displayName":"TERM","link":{"linkType":"LinkTypePage","href":"#!page-term"},"canDelete":true,"canRename":true,"canMove":true,"canProperties":true,"opened":false}]}</script>
+    <meta charset="UTF-8">
+    <!-- generator meta tag -->
+    <!-- leave this for stats and Silex version check -->
+    <meta name="generator" content="Silex v2.2.13">
+    <!-- End of generator meta tag -->
+    <script type="text/javascript" src="https://editor.silex.me/static/2.12/jquery.js" data-silex-static=""></script>
+    <script type="text/javascript" src="https://editor.silex.me/static/2.12/jquery-ui.js" data-silex-static="" data-silex-remove-publish=""></script>
+    <script type="text/javascript" src="https://editor.silex.me/static/2.12/pageable.js" data-silex-static="" data-silex-remove-publish=""></script>
+    <script type="text/javascript" src="https://editor.silex.me/static/2.12/front-end.js" data-silex-static=""></script>
+    <link rel="stylesheet" href="https://editor.silex.me/static/2.12/normalize.css" data-silex-static="">
+    <link rel="stylesheet" href="https://editor.silex.me/static/2.12/front-end.css" data-silex-static="">
+
+    <style type="text/css" class="silex-style">.paged-element-hidden.animated {animation-name: none !important;}button {background-color: lightblue; border: 0px; border-radius: 4px; box-shadow: 0px 2px blue; margin-top: px; margin-bottom: 2px;}button:active {box-shadow: 0px 0px blue; margin-top: 2px; margin-bottom: 0px;}//////////////////////////////////////hover.js
+document.write('<link href="./css/hover.css" rel="stylesheet">');
+////////////////////////////////////
+
+
+
+body.silex-runtime {background-color: black; transition: background-color 0s .3s linear;}body.silex-runtime>* {opacity: .1; transition: opacity .3s ease-in;}body.silex-runtime.loaded>* {opacity: initial;}body.loaded {background-color: initial;}body.silex-runtime:before {content: ''; border: 16px solid #f3f3f3; border-top: 16px solid #3498db; border-radius: 50%; width: 120px; height: 120px; animation: spin 2s linear infinite; position: absolute; top: 50vh; left: 50vw; z-index: 100;}body.silex-runtime.loaded:before {content: none;}@keyframes spin { 
+  0% {transform: rotate(0deg);} 
+  100% {transform: rotate(360deg);} 
+}</style>
+    <script type="text/javascript" class="silex-script">/*
+ * active menu widget for Silex
+ * create an element which links to an anchor, e.g. an element with a link to #anchor1
+ * add the css class "anchor-link" to this element
+ * create an element which is the anchor, e.g. an element with the css class "anchor1"
+ * when the user clicks on the link, the scroll slides until the element is visible
+ * when the user slides and the element is visible, the link gets a css class "active-menu"
+ */
+$(function() {
+    // Cache selectors
+    var lastId,
+        // All list items
+        menuItems = $(".anchor-link"),
+        // Anchors corresponding to menu items
+        // find the name of the elements which are anchors
+        scrollItems = menuItems.map(function(){
+            // the names are in the href attribute of the anchor links
+            var attr = $(this).attr("data-silex-href") || $(this).attr("href");
+            // case of a link in text field or an external link after publish
+            $(this).find("[href]").each(function() {
+                attr = $(this).attr("href");
+            });
+            // case of an "external link" before publish
+            $(this).find("[data-silex-href]").each(function() {
+                attr = $(this).attr("href");
+            });
+            // the links to anchors are expected to start with #
+            if(attr && attr.indexOf("#") === 0) {
+                var name = attr.substring(attr.lastIndexOf("#") + 1);
+                // exclude page names (#!page-)
+                if(name.indexOf("!page") !== 0) {
+                    var item = $("." + name);
+                    // check if there is a hash in the URL to scroll to the anchor at start
+                    if(window.location.hash.indexOf("#" + name) > 0) {
+                        var offsetTop = item.offset().top;
+                        $('html, body').stop().animate({
+                            scrollTop: offsetTop
+                        }, 300);
+                    }
+                    // now find the element itself, which has the name as a css class
+                    if (item.length) { 
+                        return {
+                            "link": this,
+                            "item": item.get(0)
+                        };
+                    }
+                }
+            }
+        });
+    // Bind click handler to menu items
+    // so we can get a fancy scroll animation
+    scrollItems.each(function() {
+        var link = this.link;
+        var item = this.item;
+        $(link).click(function(e){
+            // leave time for the page to open
+            // and then scroll
+            setTimeout(function() {
+              var offsetTop = $(item).offset().top;
+              $('html, body').stop().animate({
+                  scrollTop: offsetTop
+              }, 300);
+              e.preventDefault();
+            }, 100);
+        });
+    })
+
+    // Bind to scroll
+    $(window).scroll(function(){
+       // Get container scroll position
+       var fromTop = $(this).scrollTop();
+       // Get id of current scroll item
+       var cur = scrollItems.map(function(){
+         if ($(this.item).offset().top <= fromTop)
+           return this;
+       });
+       // add the css class on the current menu item
+       $(".active-menu").removeClass("active-menu");
+       if(cur.length > 0) {
+           cur = cur[cur.length-1];
+           $(cur.link).addClass("active-menu");
+       }
+    });
+});
+
+/***********************\
+    Loader widget
+\***********************/
+$(function() {
+    $(document.body).addClass('loaded');
+});
+/***********************\
+    /Loader widget
+\***********************/
+</script>
+    <style class="silex-inline-styles" type="text/css">.body-initial {background-color: rgba(7,13,112,1); position: static; left: 38px; top: -116px; background-image: url(Images/Habillage/Carreaux.jpg); border-width: 1px 1px 1px 1px; border-style: solid;}.silex-id-1633164179238-22 {position: static;}.silex-id-1633164179239-23 {min-height: 203px; background-color: transparent; position: relative; margin-left: auto; margin-right: auto; background-image: url(Images/Habillage/Carreaux.jpg);}.silex-id-1633164236709-24 {width: 365px; min-height: 582px; position: absolute; top: -174px; left: 460px;}.silex-id-1633164427348-25 {width: 365px; min-height: 636px; position: absolute; top: -174px; left: 460px;}.silex-id-1633164658396-31 {width: 365px; min-height: 580px; position: absolute; top: -174px; left: 460px;}.silex-id-1633164715394-33 {position: static; background-color: rgba(7,13,112,1);}.silex-id-1633164715395-34 {min-height: 420px; background-color: transparent; position: relative; margin-left: auto; margin-right: auto; background-image: url(Images/Habillage/Carreaux.jpg);}.silex-id-1633164741857-35 {width: 570px; min-height: 517px; position: absolute; top: -174px; left: 388px; background-color: transparent;}.silex-id-1633164828255-38 {width: 1350px; min-height: 81px; position: absolute; top: 96px; left: 23px; background-attachment: fixed; background-color: rgba(202,190,0,1);}.silex-id-1633220527214-2 {position: static;}.silex-id-1633220527214-3 {min-height: 656px; background-color: rgba(255,255,255,1); position: relative; margin-left: auto; margin-right: auto; background-image: url(Images/Habillage/Carreaux.jpg); border-width: 2px 2px 2px 2px; border-style: solid;}.silex-id-1633222075210-12 {width: 635px; height: 436px; position: absolute; top: 86px; left: 700px;}.silex-id-1633222421848-14 {width: 196px; min-height: 219px; position: absolute; top: 33.5px; left: 79px; padding-top: 0px;}.silex-id-1633222495686-15 {width: 235px; min-height: 52px; position: absolute; top: 536.5px; left: 898px;}.silex-id-1633222996652-31 {position: static;}.silex-id-1633222996653-32 {min-height: 50px; background-color: rgba(0,0,0,1); position: relative; margin-left: auto; margin-right: auto; border-width: 2px 2px 2px 2px; border-style: solid;}.silex-id-1633224296408-59 {width: 201px; min-height: 307px; position: absolute; top: -209px; left: 31px;}.silex-id-1633294257985-0 {width: 134px; height: 43px; position: absolute; top: 5px; left: 326.750244140625px;}.silex-id-1633378716305-0 {width: 301px; min-height: 52px; position: absolute; top: 1px; left: 25px;}.silex-id-1633378773212-1 {width: 226px; min-height: 52px; position: absolute; top: 1px; left: 710px;}.silex-id-1633379415992-6 {width: 139px; height: 91px; position: absolute; top: 71.5px; left: 796.5px;}.silex-id-1635115208457-0 {width: 329px; min-height: 219px; position: absolute; top: 33.5px; left: 274.75px;}.silex-id-1635115728026-2 {width: 0px; min-height: 0px; background-color: rgba(254,185,185,1); position: absolute; top: 387px; left: 454px; border-radius: 25px 25px 25px 25px;}.silex-id-1635116894356-16 {width: 1350px; min-height: 81px; position: absolute; top: 11px; left: 23px; background-attachment: fixed; background-color: rgba(7,13,112,1);}.silex-id-1635119196036-23 {position: static;}.silex-id-1635119196039-24 {min-height: 981px; background-color: rgb(255, 255, 255); position: relative; margin-left: auto; margin-right: auto; background-image: url(Images/Habillage/Carreaux.jpg);}.silex-id-1635119484160-27 {width: 1024px; min-height: 724px; background-color: transparent; position: absolute; border-width: 5px 5px 5px 5px; border-style: solid; top: 34px; left: 192px;}.silex-id-1635156495092-0 {position: static;}.silex-id-1635156495095-1 {min-height: 807px; background-color: rgb(255, 255, 255); position: relative; margin-left: auto; margin-right: auto; background-image: url(Images/Habillage/Carreaux.jpg);}.silex-id-1635156552259-2 {position: static;}.silex-id-1635156552260-3 {min-height: 655.25px; background-color: rgb(255, 255, 255); position: relative; margin-left: auto; margin-right: auto; background-image: url(Images/Habillage/Carreaux.jpg);}.silex-id-1635156552451-4 {position: static;}.silex-id-1635156552452-5 {min-height: 2800px; background-color: rgb(255, 255, 255); position: relative; margin-left: auto; margin-right: auto; background-image: url(Images/Habillage/Carreaux.jpg);}.silex-id-1635158440448-8 {position: static;}.silex-id-1635158440450-9 {min-height: 803px; background-color: rgb(255, 255, 255); position: relative; margin-left: auto; margin-right: auto; background-image: url(Images/Habillage/Carreaux.jpg);}.silex-id-1635158513552-10 {width: 1024px; min-height: 724px; background-color: transparent; position: absolute; top: 48.25px; left: 191.5px;}.silex-id-1635180116908-6 {width: 120px; min-height: 207px; position: absolute; top: -206px; left: 39px;}.silex-id-1635180282840-7 {width: 270px; min-height: 75px; background-color: rgba(240,189,231,1); position: absolute; top: 4871px; left: 8093.5px; border-radius: 25px 25px 25px 25px;}.silex-id-1635251216163-1 {width: 337px; min-height: 318px; background-color: rgb(255, 255, 255); position: absolute; top: 2411px; left: 1035px;}.silex-id-1635283052545-2 {width: 100px; min-height: 81px; position: absolute; top: 0.333099365234375px; left: 48px;}.silex-id-1635283106904-3 {width: 197px; min-height: 86px; background-color: rgba(248,175,175,1); position: absolute; top: 278.7334442138672px; left: 121px; border-radius: 25px 25px 25px 25px;}.silex-id-1635283343860-4 {width: 197px; min-height: 86px; background-color: rgba(179,198,244,1); position: absolute; top: 320.19976806640625px; left: 440.75px; border-radius: 25px 25px 25px 25px;}.silex-id-1635283343861-5 {width: 100px; min-height: 81px; position: absolute; top: 0.333099365234375px; left: 48px;}.silex-id-1635283350563-8 {width: 197px; min-height: 86px; background-color: rgba(96,255,141,1); position: absolute; top: 463.5330810546875px; left: 95.75px; border-radius: 25px 25px 25px 25px;}.silex-id-1635283350563-9 {width: 100px; min-height: 81px; position: absolute; top: 0.333099365234375px; left: 48px;}.silex-id-1635283359193-12 {width: 197px; min-height: 86px; background-color: rgba(198,250,49,1); position: absolute; top: 502.79998779296875px; left: 464.75px; border-radius: 25px 25px 25px 25px;}.silex-id-1635283359193-13 {width: 100px; min-height: 81px; position: absolute; top: 0.33331298828125px; left: 48px;}.silex-id-1635286702673-16 {width: 36px; min-height: 35px; background-color: transparent; position: absolute; top: 41px; left: 127px;}.silex-id-1635286812141-17 {width: 41px; min-height: 35px; background-color: transparent; position: absolute; top: 58px; left: 136px;}.silex-id-1635287321216-19 {width: 50px; height: 50px; position: absolute; top: 722.25px; left: 1233.75px;}.silex-id-1635287343404-20 {width: 41px; min-height: 35px; background-color: transparent; position: absolute; top: 16px; left: 325.75px;}.silex-id-1635287681305-28 {width: 50px; height: 50px; position: absolute; top: 16px; left: 618px;}.silex-id-1635287923281-29 {position: static;}.silex-id-1635287923285-30 {min-height: 100px; background-color: rgb(255, 255, 255); position: relative; margin-left: auto; margin-right: auto;}.silex-id-1635289851362-31 {width: 548px; min-height: 81px; position: absolute; top: 9.75px; left: 429px; background-attachment: fixed; background-color: rgba(7,13,112,1);}.silex-id-1635290000873-33 {width: 503px; min-height: 308px; position: absolute; top: 135px; left: 33px; background-color: rgba(255,255,255,1);}.silex-id-1635290436862-34 {width: 503px; min-height: 496px; position: absolute; top: 87px; left: 856px;}.silex-id-1635290612436-36 {width: 491px; min-height: 81.61666870117188px; position: absolute; top: 73px; left: 59px;}.silex-id-1635291724256-38 {width: 259px; height: 302px; position: absolute; top: 192px; left: 571px;}.silex-id-1635291804910-39 {width: 582px; min-height: 127px; position: absolute; top: -19px; left: -17px;}.silex-id-1635292048302-40 {width: 1061px; min-height: 161.56666564941406px; position: absolute; top: 583px; left: 166px;}.silex-id-1635292299575-41 {width: 860px; min-height: 119.76666259765625px; position: absolute; top: 8px; left: 300px; background-color: rgba(231,255,0,1);}.silex-id-1635292564466-42 {width: 783px; min-height: 97px; position: absolute; top: 162px; left: 70px;}.silex-id-1635292876077-45 {width: 29px; min-height: 36px; background-color: transparent; position: absolute; top: 9.5px; left: 674px;}.silex-id-1635320931507-0 {width: 600px; min-height: 523px; position: absolute; top: 486px; left: 58.5px;}.silex-id-1635321675602-1 {width: 118px; height: 221px; position: absolute; top: 548.1999969482422px; left: 1236.9493713378906px;}.silex-id-1635321792804-2 {width: 600px; min-height: 713px; position: absolute; top: 265px; left: 727px;}.silex-id-1635322006025-3 {width: 355px; height: 255px; position: absolute; top: 220px; left: 152px;}.silex-id-1635323237711-4 {width: 1302px; min-height: 164px; position: absolute; top: 962px; left: 48px;}.silex-id-1635323733009-6 {width: 435px; min-height: 44px; background-color: rgba(251,241,20,1); position: absolute; top: 1073px; left: 173px;}.silex-id-1635324414175-7 {width: 33px; min-height: 27px; position: absolute; background-color: transparent; top: 36px; left: 367px;}@media only screen and (max-width: 480px) {.silex-id-1633222075210-12 {height: 291px; top: 0px; left: 0px; width: 467px;}.silex-id-1635119484160-27 {position: static;}}</style>
+    <title></title>
+    
+
+    
+<meta name="viewport" content="width=device-width, initial-scale=1"><style type="text/css" class="silex-style-settings">.website-width {width: 1400px;}@media (min-width: 481px) {.silex-editor {min-width: 1600px;}}</style><link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" class="silex-custom-font"><link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&amp;display=swap" rel="stylesheet" class="silex-custom-font"><link href="https://fonts.googleapis.com/css2?family=Zen+Kurenaido&amp;display=swap" rel="stylesheet" class="silex-custom-font"><script data-dependency="" src="https://editor.silex.me/static/2.12/unslider/onswipe.js" type="module" data-silex-static=""></script><script data-dependency="" src="https://editor.silex.me/static/2.12/unslider/unslider-min.js" data-silex-static=""></script><link data-dependency="" rel="stylesheet" href="https://editor.silex.me/static/2.12/unslider/unslider.css" data-silex-static=""><style class="silex-prodotype-style" type="text/css" data-style-id="all-style">h1 {text-align: center;}h2 {background-color: #; text-align: left; -webkit-transition: all 1s ease; -moz-transition: all 1s ease; -o-transition: all 1s ease; transition: all 1s ease;}.text-element > .silex-element-content {font-family: 'Roboto', sans-serif;}p {text-align: center;}</style><style class="silex-prodotype-style" type="text/css" data-style-id="style-bas-de-page">.style-bas-de-page p {color: #ffffff;}</style><style class="silex-prodotype-style" type="text/css" data-style-id="style-lettres-blanches">.style-lettres-blanches h1 {color: #ffffff;}.style-lettres-blanches h3 {font-size: 50px; color: #ffffff; text-align: center;}</style><style class="silex-prodotype-style" type="text/css" data-style-id="style-zen1">.style-zen1 h2 {font-family: 'Zen Kurenaido', sans-serif; font-size: 70px;}.style-zen1 h3 {font-family: 'Zen Kurenaido', sans-serif; font-size: 150px;}</style><style class="silex-prodotype-style" type="text/css" data-style-id="style-corps-de-texte-gros">.style-corps-de-texte-gros h1 {font-size: 50px;}.style-corps-de-texte-gros p {text-align: justify; line-height: 2;}</style><style class="silex-prodotype-style" type="text/css" data-style-id="style-corps-de-texte-rouge">.style-corps-de-texte-rouge h2 {color: #ff0000; text-align: left;}.style-corps-de-texte-rouge p {text-align: justify; line-height: 2;}</style><style class="silex-prodotype-style" type="text/css" data-style-id="style-corps-de-texte-carreaux">.style-corps-de-texte-carreaux h2 {text-align: justify; line-height: 1.3;}.style-corps-de-texte-carreaux.text-element > .silex-element-content {background-color: #;}.style-corps-de-texte-carreaux p {background-color: #ffffff; text-align: justify; line-height: 1.7;}</style><!-- Silex HEAD tag do not remove --><link href="./css/animate.min.css" rel="stylesheet">
+<head>
+	<link href="css/hover.css" rel="stylesheet">
+</head><!-- End of Silex HEAD tag do not remove --></head>
+
+<body data-silex-id="body-initial" class="body-initial all-style enable-mobile prevent-resizable prevent-selectable editable-style silex-runtime" data-silex-type="container-element" style="">
+    
+
+
+
+
+
+
+
+
+
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section data-silex-type="container-element" class="editable-style section-element silex-id-1633164179238-22 page-term-page page-3-me-page page-2nde-page page-1-re-page page-3eme paged-element page-2nde page-1ere page-term" data-silex-id="silex-id-1633164179238-22" style=""><div data-silex-type="container-element" class="editable-style container-element silex-id-1633164179239-23 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1633164179239-23" style=""><div data-silex-type="text-element" class="editable-style text-element silex-id-1633164741857-35 page-term-page style-zen1 page-term paged-element" data-silex-id="silex-id-1633164741857-35" style="" href="null"><div class="silex-element-content normal"><h3>Term</h3></div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1633164658396-31 page-1-re-page style-zen1 page-1ere paged-element" data-silex-id="silex-id-1633164658396-31" style="" href="null"><div class="silex-element-content normal"><h3>1ère</h3></div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1633164236709-24 page-3-me-page style-zen1 page-3eme paged-element" data-silex-id="silex-id-1633164236709-24" style="" href="null"><div class="silex-element-content normal"><h3>3ème</h3></div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1633164427348-25 page-2nde-page style-zen1 page-2nde paged-element" data-silex-id="silex-id-1633164427348-25" style="" href="null"><div class="silex-element-content normal"><h3>2nde</h3></div></div><div data-silex-type="container-element" class="editable-style container-element silex-id-1635287343404-20 anchorD" data-silex-id="silex-id-1635287343404-20" style=""></div><a data-silex-type="image-element" class="editable-style image-element silex-id-1633379415992-6 page-term-page grow page-3-me-page page-2nde-page page-1-re-page page-3eme paged-element page-2nde page-1ere page-term page-link-active" data-silex-id="silex-id-1633379415992-6" style="" href="#!page-home"><img src="Images/Habillage/MonaLisa.png"></a></div></section><section data-silex-type="container-element" class="editable-style section-element silex-id-1633220527214-2 page-page-1 page-home paged-element" data-silex-id="silex-id-1633220527214-2" style=""><div data-silex-type="container-element" class="editable-style container-element silex-id-1633220527214-3 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1633220527214-3" style=""><div data-silex-type="text-element" class="editable-style text-element silex-id-1633222495686-15 page-page-1 page-home paged-element" data-silex-id="silex-id-1633222495686-15" style="" href="null"><div class="silex-element-content normal"><p>La Joconde selon Banksy</p></div></div><a data-silex-type="container-element" class="editable-style container-element silex-id-1635115728026-2" data-silex-id="silex-id-1635115728026-2" style="" href="#!page-term"></a><a data-silex-type="container-element" class="editable-style container-element silex-id-1635180282840-7 page-page-1 page-home paged-element" data-silex-id="silex-id-1635180282840-7" href="#!page-term" style=""><div data-silex-type="text-element" class="editable-style text-element silex-id-1633224296408-59 style-zen1 page-page-1 page-home paged-element" data-silex-id="silex-id-1633224296408-59" style="" href="null"><div class="silex-element-content normal"><h1>Terminale<br></h1></div></div></a><a data-silex-type="container-element" class="editable-style container-element silex-id-1635283350563-8 page-home paged-element" data-silex-id="silex-id-1635283350563-8" style="" href="#!page-1ere"><div data-silex-type="text-element" class="editable-style text-element silex-id-1635283350563-9 style-zen1" data-silex-id="silex-id-1635283350563-9" style="" href="null"><div class="silex-element-content normal"><h1>1ère</h1></div></div></a><a data-silex-type="container-element" class="editable-style container-element silex-id-1635283359193-12 page-home paged-element" data-silex-id="silex-id-1635283359193-12" style="" href="#!page-term"><div data-silex-type="text-element" class="editable-style text-element silex-id-1635283359193-13 style-zen1" data-silex-id="silex-id-1635283359193-13" style="" href="null"><div class="silex-element-content normal"><h1>Term<br></h1></div></div></a><a data-silex-type="container-element" class="editable-style container-element silex-id-1635283343860-4 page-home paged-element" data-silex-id="silex-id-1635283343860-4" style="" href="#!page-2nde"><div data-silex-type="text-element" class="editable-style text-element silex-id-1635283343861-5 style-zen1" data-silex-id="silex-id-1635283343861-5" style="" href="null"><div class="silex-element-content normal"><h1>2nde</h1></div></div></a><a data-silex-type="container-element" class="editable-style container-element silex-id-1635283106904-3 page-home paged-element" data-silex-id="silex-id-1635283106904-3" style="" href="#!page-3eme"><div data-silex-type="text-element" class="editable-style text-element silex-id-1635283052545-2 style-zen1" data-silex-id="silex-id-1635283052545-2" style="" href="null"><div class="silex-element-content normal"><h1>3ème</h1></div></div></a><div data-silex-type="text-element" class="editable-style text-element silex-id-1633222421848-14 page-page-1 page-home paged-element style-zen1" data-silex-id="silex-id-1633222421848-14" style="" href="null"><div class="silex-element-content normal"><h2>E.S.C.<br></h2></div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635115208457-0 style-zen1 page-page-1 page-home paged-element" data-silex-id="silex-id-1635115208457-0" style="" href="null"><div class="silex-element-content normal"><h2>Ressources</h2></div></div><div data-silex-type="image-element" class="editable-style image-element silex-id-1633222075210-12 animate_animated animate_fadeIn style-zen1 page-page-1 page-home paged-element" data-silex-id="silex-id-1633222075210-12" style=""><img src="Images/Habillage/MonaLisa.png"></div></div></section><section data-silex-type="container-element" class="editable-style section-element silex-id-1633164715394-33 page-term-page page-term paged-element" data-silex-id="silex-id-1633164715394-33" style=""><div data-silex-type="container-element" class="editable-style container-element silex-id-1633164715395-34 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1633164715395-34" style=""><a data-silex-type="text-element" class="editable-style text-element silex-id-1633164828255-38 page-term-page page-term paged-element style-lettres-blanches anchor-link" data-silex-id="silex-id-1633164828255-38" style="" href="#!page-term#anchor1"><div class="silex-element-content normal"><h1>DIAPO ARTS Généralités</h1></div></a><a data-silex-type="text-element" class="editable-style text-element silex-id-1635116894356-16 page-term paged-element style-lettres-blanches anchor-link" data-silex-id="silex-id-1635116894356-16" style="" href="#!page-term#anchor0"><div class="silex-element-content normal"><h1>IMAGES - RÉALITÉ - INFO</h1></div></a></div></section><section data-silex-type="container-element" class="editable-style section-element silex-id-1635158440448-8 page-term-page page-term paged-element" data-silex-id="silex-id-1635158440448-8"><section data-silex-type="container-element" class="editable-style container-element silex-id-1635158440450-9 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1635158440450-9" style=""><div data-silex-type="html-element" class="editable-style html-element silex-id-1635158513552-10 silex-component-slideshow silex-use-height-not-minheight page-term paged-element" data-silex-id="silex-id-1635158513552-10" style=""><div class="silex-element-content"><div id="parent_1635372583209_963">
+<!-- preview -->
+<div class="prodotype-preview">
+  
+  <div class="preview-text prodotype-force-size"><p>~ Preview ~</p></div>
+  <figure class="slide-0">
+    <div class="slide-image prodotype-force-size">
+      
+    </div>
+  </figure>
+  
+</div>
+<div id="id_1635372583209_963">
+  <!-- runtime -->
+  <!-- the whole slideshow -->
+  <ul class="prodotype-runtime">
+  
+    <li><figure class="slide-0">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-1">
+      
+      <div class="slide-image">
+        
+          <figcaption>Quel effet sur le spectateur?</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-2">
+      
+      <div class="slide-image">
+        
+          <figcaption>Selon les goûts..</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-3">
+      
+      <div class="slide-image">
+        
+          <figcaption>L'appareil photo produit des images comme le fait l'oeil..
+
+EFFET DE REEL</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-4">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-5">
+      
+      <div class="slide-image">
+        
+          <figcaption>Les images peuvent détourner du réel.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-6">
+      
+      <div class="slide-image">
+        
+          <figcaption>La mère de l'enfant était à côté..
+Parfois on fait du vrai (l'horreur de la famine) avec du faux (l'enfant abandonné)</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-7">
+      
+      <div class="slide-image">
+        
+          <figcaption>Une course pour s'amuser?</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-8">
+      
+      <div class="slide-image">
+        
+          <figcaption>Pas vraiment.. Tout dépend du CADRAGE. L'image cache ce qu'elle ne montre pas.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-9">
+      
+      <div class="slide-image">
+        
+          <figcaption>Qu'est ce que c'est que ça?</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-10">
+      
+      <div class="slide-image">
+        
+          <figcaption>Ah bon?</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-11">
+      
+      <div class="slide-image">
+        
+          <figcaption>Hmmm La légende ancre le sens de l'image. Polysémique = plusieurs sens.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-12">
+      
+      <div class="slide-image">
+        
+          <figcaption>Les agences de presse fournissent les médias.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-13">
+      
+      <div class="slide-image">
+        
+          <figcaption>Image satellite utilisée par les Etats-Unis en 2003 pour prouver que l'Irak avait des armes de destruction massive.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-14">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-15">
+      
+      <div class="slide-image">
+        
+          <figcaption>Un fier cavalier ce Mussolini!</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-16">
+      
+      <div class="slide-image">
+        
+          <figcaption>C'était plus convaincant avant..</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-17">
+      
+      <div class="slide-image">
+        
+          <figcaption>Il manque quelqu'un sur la photo de droite..</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-18">
+      
+      <div class="slide-image">
+        
+          <figcaption>Ici c'est à gauche.. On sait truquer les photos depuis très longtemps..</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-19">
+      
+      <div class="slide-image">
+        
+          <figcaption>Un exemple récent (2016)</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-20">
+      
+      <div class="slide-image">
+        
+          <figcaption>La photo originale.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-21">
+      
+      <div class="slide-image">
+        
+          <figcaption>Comment faire d'un homme plus qu'un homme? En lui enlevant un bourrelet..</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-22">
+      
+      <div class="slide-image">
+        
+          <figcaption>Révolte populaire en Egypte, janvier 2011.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-23">
+      
+      <div class="slide-image">
+        
+          <figcaption>Même événement mais d'un autre point de vue.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-24">
+      
+      <div class="slide-image">
+        
+          <figcaption>Encore un autre.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-25">
+      
+      <div class="slide-image">
+        
+          <figcaption>Trois journaux (de droite, de gauche, "neutre"). Le choix des images n'est pas innocent.</figcaption>
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-26">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+  </ul>
+</div>
+</div>
+<style type="text/css">#parent_1635372583209_963 .prodotype-preview {list-style-type: none; margin: 0; padding: 0;}#parent_1635372583209_963 .prodotype-preview .preview-text {display: flex; align-items: center; justify-content: center;}#parent_1635372583209_963 .prodotype-preview .preview-text p {z-index: 1; background-color: black; color: white;}#parent_1635372583209_963 .slide-0 .slide-image {background-image: url(Images/Term/ImagRealActu/img0.jpg);}#parent_1635372583209_963 .slide-1 .slide-image {background-image: url(Images/Term/ImagRealActu/img1.jpg);}#parent_1635372583209_963 .slide-2 .slide-image {background-image: url(Images/Term/ImagRealActu/img2.jpg);}#parent_1635372583209_963 .slide-3 .slide-image {background-color: #; background-image: url(Images/Term/ImagRealActu/img3.jpg);}#parent_1635372583209_963 .slide-4 .slide-image {background-image: url(Images/Term/ImagRealActu/img4.jpg);}#parent_1635372583209_963 .slide-5 .slide-image {background-image: url(Images/Term/ImagRealActu/img5.jpg);}#parent_1635372583209_963 .slide-6 .slide-image {background-image: url(Images/Term/ImagRealActu/img6.jpg);}#parent_1635372583209_963 .slide-7 .slide-image {background-image: url(Images/Term/ImagRealActu/img7.jpg);}#parent_1635372583209_963 .slide-8 .slide-image {background-image: url(Images/Term/ImagRealActu/img8.jpg);}#parent_1635372583209_963 .slide-9 .slide-image {background-image: url(Images/Term/ImagRealActu/img9.jpg);}#parent_1635372583209_963 .slide-10 .slide-image {background-image: url(Images/Term/ImagRealActu/img10.jpg);}#parent_1635372583209_963 .slide-11 .slide-image {background-image: url(Images/Term/ImagRealActu/img11.jpg);}#parent_1635372583209_963 .slide-12 .slide-image {background-image: url(Images/Term/ImagRealActu/img12.jpg);}#parent_1635372583209_963 .slide-13 .slide-image {background-image: url(Images/Term/ImagRealActu/img13.jpg);}#parent_1635372583209_963 .slide-14 .slide-image {background-image: url(Images/Term/ImagRealActu/img14.jpg);}#parent_1635372583209_963 .slide-15 .slide-image {background-image: url(Images/Term/ImagRealActu/img15.jpg);}#parent_1635372583209_963 .slide-16 .slide-image {background-image: url(Images/Term/ImagRealActu/img16.jpg);}#parent_1635372583209_963 .slide-17 .slide-image {background-image: url(Images/Term/ImagRealActu/img17.jpg);}#parent_1635372583209_963 .slide-18 .slide-image {background-image: url(Images/Term/ImagRealActu/img18.jpg);}#parent_1635372583209_963 .slide-19 .slide-image {background-image: url(Images/Term/ImagRealActu/img19.jpg);}#parent_1635372583209_963 .slide-20 .slide-image {background-image: url(Images/Term/ImagRealActu/img20.jpg);}#parent_1635372583209_963 .slide-21 .slide-image {background-image: url(Images/Term/ImagRealActu/img21.jpg);}#parent_1635372583209_963 .slide-22 .slide-image {background-image: url(Images/Term/ImagRealActu/img22.jpg);}#parent_1635372583209_963 .slide-23 .slide-image {background-image: url(Images/Term/ImagRealActu/img23.jpg);}#parent_1635372583209_963 .slide-24 .slide-image {background-image: url(Images/Term/ImagRealActu/img24.jpg);}#parent_1635372583209_963 .slide-25 .slide-image {background-image: url(Images/Term/ImagRealActu/img25.jpg);}#parent_1635372583209_963 .slide-26 .slide-image {background-image: url(Images/Term/ImagRealActu/img28.jpg);}#parent_1635372583209_963 .unslider {position: relative;}#parent_1635372583209_963 .slide-image {width: 100%; display: flex; justify-content: center; background-repeat: no-repeat; background-size: cover; background-position: 50%; align-items: flex-end;}#parent_1635372583209_963 figcaption {padding: 50px; color: white; background-color: rgba(0,0,0,0.5); width: 100%; text-align: center;}#parent_1635372583209_963 .unslider-nav {position: absolute; bottom: 10px; left: 0; right: 0; top: auto; margin: 0;}#parent_1635372583209_963 .unslider-nav ol {text-align: center;}#parent_1635372583209_963 .unslider-nav ol li.unslider-active {background: #fff; cursor: default; opacity: 1;}#parent_1635372583209_963 .unslider-nav ol li {display: inline-block; float: none; width: 6px; height: 6px; margin: 0 4px; padding: 3px; background: transparent; border-radius: 10px; overflow: hidden; text-indent: -999em; border: 2px solid #fff; cursor: pointer; opacity: .4;}#parent_1635372583209_963 .unslider-arrow {display: block; width: 32px; height: 32px; top: 50%; right: 16px; left: auto; margin-top: -16px; overflow: hidden; background: rgba(0,0,0,.2) no-repeat 50% 50%; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAQCAQAAABuQZ3IAAAAi0lEQVR4AU3OISBEQQBAwS0AACS9NxqQgCZpkiYBVddFvWhAAUABAPQCAGC4g/0vTnrBqCfDIZl70J+kMUBPpEwT4FNXxBxz4F1HxHyr4EVTxBLb4EFNxEon4CJSlVNw9AcV9sC16h8osgke1P1ArgXwouVvdQq86ww/GQefusNf7kBviBlxpT8k+gL/Wox4r1d4MwAAAABJRU5ErkJggg==); background-size: 7px 11px; border-radius: 32px; text-indent: -999em; opacity: .6; transition: opacity .2s;}#parent_1635372583209_963 .unslider-arrow.prev {left: 16px; right: auto; -ms-transform: rotate(-180deg); transform: rotate(-180deg);}</style>
+<script type="text/javascript">
+  (function() {
+    // do not start in the editor (it would mess with the markup)
+    if(!$('body').hasClass('silex-runtime')) return;
+
+    var $slider = $('#id_1635372583209_963')
+    var slider = $slider.unslider({
+      'autoplay': false,
+      'speed': 750,
+      'delay': 3000,
+      'index': 0,
+      'nav': false,
+      'animation': 'horizontal',
+      'arrows': true
+    });
+    //  Listen to slide changes
+    
+    // apply element height to the images
+    var silexElement = $slider.closest('.editable-style');
+    var elementMinHeight = silexElement.css('height');
+    var elementWidth = silexElement.css('width');
+    $('#id_1635372583209_963 li .slide-image').css({
+      'height': elementMinHeight
+    });
+    
+
+    setTimeout(function(){
+      // use onswipe.js
+      // Fix #1127
+      window.onSwipe('left', function(){ $slider.data('unslider').next()})
+      window.onSwipe('right', function(){ $slider.data('unslider').prev()})
+    }, 0)
+  })();
+</script>
+</div></div><div data-silex-type="container-element" class="editable-style container-element silex-id-1635286812141-17 anchor0 page-term paged-element" data-silex-id="silex-id-1635286812141-17" style=""></div><a data-silex-type="image-element" class="editable-style image-element silex-id-1635287321216-19 anchor-link page-term paged-element" data-silex-id="silex-id-1635287321216-19" style="" href="#!page-term#anchorD"><img src="Images/Habillage/flecheHaut.png"></a></section></section><section data-silex-type="container-element" class="editable-style section-element silex-id-1635119196036-23 page-term-page page-term paged-element" data-silex-id="silex-id-1635119196036-23" style=""><section data-silex-type="container-element" class="editable-style container-element silex-id-1635119196039-24 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1635119196039-24" style=""><div data-silex-type="html-element" class="editable-style html-element silex-id-1635119484160-27 page-term paged-element silex-component-slideshow silex-use-height-not-minheight" data-silex-id="silex-id-1635119484160-27" style=""><div class="silex-element-content"><div id="parent_1635372583199_199">
+<!-- preview -->
+<div class="prodotype-preview">
+  
+  <div class="preview-text prodotype-force-size"><p>~ Preview ~</p></div>
+  <figure class="slide-0">
+    <div class="slide-image prodotype-force-size">
+      
+    </div>
+  </figure>
+  
+</div>
+<div id="id_1635372583199_199">
+  <!-- runtime -->
+  <!-- the whole slideshow -->
+  <ul class="prodotype-runtime">
+  
+    <li><figure class="slide-0">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-1">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-2">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-3">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-4">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-5">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-6">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-7">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-8">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-9">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-10">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-11">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-12">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-13">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-14">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-15">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-16">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-17">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-18">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-19">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-20">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-21">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-22">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-23">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-24">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-25">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-26">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-27">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-28">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-29">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-30">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-31">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-32">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-33">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-34">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-35">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-36">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-37">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-38">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-39">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-40">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-41">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-42">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-43">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-44">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-45">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-46">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-47">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-48">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-49">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-50">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-51">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-52">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-53">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-54">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-55">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-56">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-57">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-58">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-59">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-60">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-61">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+    <li><figure class="slide-62">
+      
+      <div class="slide-image">
+        
+      </div>
+      
+    </figure></li>
+  
+  </ul>
+</div>
+</div>
+<style type="text/css">#parent_1635372583199_199 .prodotype-preview {list-style-type: none; margin: 0; padding: 0;}#parent_1635372583199_199 .prodotype-preview .preview-text {display: flex; align-items: center; justify-content: center;}#parent_1635372583199_199 .prodotype-preview .preview-text p {z-index: 1; background-color: black; color: white;}#parent_1635372583199_199 .slide-0 .slide-image {background-image: url(Images/DiapArts/img0.jpg);}#parent_1635372583199_199 .slide-1 .slide-image {background-image: url(Images/DiapArts/img1.jpg);}#parent_1635372583199_199 .slide-2 .slide-image {background-image: url(Images/DiapArts/img2.jpg);}#parent_1635372583199_199 .slide-3 .slide-image {background-image: url(Images/DiapArts/img3.jpg);}#parent_1635372583199_199 .slide-4 .slide-image {background-image: url(Images/DiapArts/img4.jpg);}#parent_1635372583199_199 .slide-5 .slide-image {background-image: url(Images/DiapArts/img5.jpg);}#parent_1635372583199_199 .slide-6 .slide-image {background-image: url(Images/DiapArts/img6.jpg);}#parent_1635372583199_199 .slide-7 .slide-image {background-image: url(Images/DiapArts/img7.jpg);}#parent_1635372583199_199 .slide-8 .slide-image {background-image: url(Images/DiapArts/img8.jpg);}#parent_1635372583199_199 .slide-9 .slide-image {background-image: url(Images/DiapArts/img9.jpg);}#parent_1635372583199_199 .slide-10 .slide-image {background-image: url(Images/DiapArts/img10.jpg);}#parent_1635372583199_199 .slide-11 .slide-image {background-image: url(Images/DiapArts/img11.jpg);}#parent_1635372583199_199 .slide-12 .slide-image {background-image: url(Images/DiapArts/img12.jpg);}#parent_1635372583199_199 .slide-13 .slide-image {background-image: url(Images/DiapArts/img13.jpg);}#parent_1635372583199_199 .slide-14 .slide-image {background-image: url(Images/DiapArts/img14.jpg);}#parent_1635372583199_199 .slide-15 .slide-image {background-image: url(Images/DiapArts/img15.jpg);}#parent_1635372583199_199 .slide-16 .slide-image {background-image: url(Images/DiapArts/img16.jpg);}#parent_1635372583199_199 .slide-17 .slide-image {background-image: url(Images/DiapArts/img17.jpg);}#parent_1635372583199_199 .slide-18 .slide-image {background-image: url(Images/DiapArts/img18.jpg);}#parent_1635372583199_199 .slide-19 .slide-image {background-image: url(Images/DiapArts/img19.jpg);}#parent_1635372583199_199 .slide-20 .slide-image {background-image: url(Images/DiapArts/img20.jpg);}#parent_1635372583199_199 .slide-21 .slide-image {background-image: url(Images/DiapArts/img21.jpg);}#parent_1635372583199_199 .slide-22 .slide-image {background-image: url(Images/DiapArts/img22.jpg);}#parent_1635372583199_199 .slide-23 .slide-image {background-image: url(Images/DiapArts/img23.jpg);}#parent_1635372583199_199 .slide-24 .slide-image {background-image: url(Images/DiapArts/img24.jpg);}#parent_1635372583199_199 .slide-25 .slide-image {background-image: url(Images/DiapArts/img25.jpg);}#parent_1635372583199_199 .slide-26 .slide-image {background-image: url(Images/DiapArts/img26.jpg);}#parent_1635372583199_199 .slide-27 .slide-image {background-image: url(Images/DiapArts/img27.jpg);}#parent_1635372583199_199 .slide-28 .slide-image {background-image: url(Images/DiapArts/img28.jpg);}#parent_1635372583199_199 .slide-29 .slide-image {background-image: url(Images/DiapArts/img29.jpg);}#parent_1635372583199_199 .slide-30 .slide-image {background-image: url(Images/DiapArts/img30.jpg);}#parent_1635372583199_199 .slide-31 .slide-image {background-image: url(Images/DiapArts/img31.jpg);}#parent_1635372583199_199 .slide-32 .slide-image {background-image: url(Images/DiapArts/img32.jpg);}#parent_1635372583199_199 .slide-33 .slide-image {background-image: url(Images/DiapArts/img33.jpg);}#parent_1635372583199_199 .slide-34 .slide-image {background-image: url(Images/DiapArts/img34.jpg);}#parent_1635372583199_199 .slide-35 .slide-image {background-image: url(Images/DiapArts/img35.jpg);}#parent_1635372583199_199 .slide-36 .slide-image {background-image: url(Images/DiapArts/img36.jpg);}#parent_1635372583199_199 .slide-37 .slide-image {background-image: url(Images/DiapArts/img37.jpg);}#parent_1635372583199_199 .slide-38 .slide-image {background-image: url(Images/DiapArts/img38.jpg);}#parent_1635372583199_199 .slide-39 .slide-image {background-image: url(Images/DiapArts/img39.jpg);}#parent_1635372583199_199 .slide-40 .slide-image {background-image: url(Images/DiapArts/img40.jpg);}#parent_1635372583199_199 .slide-41 .slide-image {background-image: url(Images/DiapArts/img41.jpg);}#parent_1635372583199_199 .slide-42 .slide-image {background-image: url(Images/DiapArts/img42.jpg);}#parent_1635372583199_199 .slide-43 .slide-image {background-image: url(Images/DiapArts/img43.jpg);}#parent_1635372583199_199 .slide-44 .slide-image {background-image: url(Images/DiapArts/img44.jpg);}#parent_1635372583199_199 .slide-45 .slide-image {background-image: url(Images/DiapArts/img45.jpg);}#parent_1635372583199_199 .slide-46 .slide-image {background-image: url(Images/DiapArts/img46.jpg);}#parent_1635372583199_199 .slide-47 .slide-image {background-image: url(Images/DiapArts/img47.jpg);}#parent_1635372583199_199 .slide-48 .slide-image {background-image: url(Images/DiapArts/img48.jpg);}#parent_1635372583199_199 .slide-49 .slide-image {background-image: url(Images/DiapArts/img49.jpg);}#parent_1635372583199_199 .slide-50 .slide-image {background-image: url(Images/DiapArts/img50.jpg);}#parent_1635372583199_199 .slide-51 .slide-image {background-image: url(Images/DiapArts/img51.jpg);}#parent_1635372583199_199 .slide-52 .slide-image {background-image: url(Images/DiapArts/img52.jpg);}#parent_1635372583199_199 .slide-53 .slide-image {background-image: url(Images/DiapArts/img53.jpg);}#parent_1635372583199_199 .slide-54 .slide-image {background-image: url(Images/DiapArts/img54.jpg);}#parent_1635372583199_199 .slide-55 .slide-image {background-image: url(Images/DiapArts/img55.jpg);}#parent_1635372583199_199 .slide-56 .slide-image {background-image: url(Images/DiapArts/img56.jpg);}#parent_1635372583199_199 .slide-57 .slide-image {background-image: url(Images/DiapArts/img57.jpg);}#parent_1635372583199_199 .slide-58 .slide-image {background-image: url(Images/DiapArts/img58.jpg);}#parent_1635372583199_199 .slide-59 .slide-image {background-image: url(Images/DiapArts/img59.jpg);}#parent_1635372583199_199 .slide-60 .slide-image {background-image: url(Images/DiapArts/img60.jpg);}#parent_1635372583199_199 .slide-61 .slide-image {background-image: url(Images/DiapArts/img61.jpg);}#parent_1635372583199_199 .slide-62 .slide-image {background-image: url(Images/DiapArts/img62.jpg);}#parent_1635372583199_199 .unslider {position: relative;}#parent_1635372583199_199 .slide-image {width: 100%; display: flex; justify-content: center; background-repeat: no-repeat; background-size: cover; background-position: 50%; align-items: center;}#parent_1635372583199_199 figcaption {padding: 50px; color: white; background-color: rgba(0,0,0,0.5); text-align: center;}#parent_1635372583199_199 .unslider-nav {position: absolute; bottom: 10px; left: 0; right: 0; top: auto; margin: 0;}#parent_1635372583199_199 .unslider-nav ol {text-align: center;}#parent_1635372583199_199 .unslider-nav ol li.unslider-active {background: #fff; cursor: default; opacity: 1;}#parent_1635372583199_199 .unslider-nav ol li {display: inline-block; float: none; width: 6px; height: 6px; margin: 0 4px; padding: 3px; background: transparent; border-radius: 10px; overflow: hidden; text-indent: -999em; border: 2px solid #fff; cursor: pointer; opacity: .4;}#parent_1635372583199_199 .unslider-arrow {display: block; width: 32px; height: 32px; top: 50%; right: 16px; left: auto; margin-top: -16px; overflow: hidden; background: rgba(0,0,0,.2) no-repeat 50% 50%; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAkAAAAQCAQAAABuQZ3IAAAAi0lEQVR4AU3OISBEQQBAwS0AACS9NxqQgCZpkiYBVddFvWhAAUABAPQCAGC4g/0vTnrBqCfDIZl70J+kMUBPpEwT4FNXxBxz4F1HxHyr4EVTxBLb4EFNxEon4CJSlVNw9AcV9sC16h8osgke1P1ArgXwouVvdQq86ww/GQefusNf7kBviBlxpT8k+gL/Wox4r1d4MwAAAABJRU5ErkJggg==); background-size: 7px 11px; border-radius: 32px; text-indent: -999em; opacity: .6; transition: opacity .2s;}#parent_1635372583199_199 .unslider-arrow.prev {left: 16px; right: auto; -ms-transform: rotate(-180deg); transform: rotate(-180deg);}</style>
+<script type="text/javascript">
+  (function() {
+    // do not start in the editor (it would mess with the markup)
+    if(!$('body').hasClass('silex-runtime')) return;
+
+    var $slider = $('#id_1635372583199_199')
+    var slider = $slider.unslider({
+      'autoplay': false,
+      'speed': 750,
+      'delay': 3000,
+      'index': 0,
+      'nav': false,
+      'animation': 'horizontal',
+      'arrows': true
+    });
+    //  Listen to slide changes
+    
+    // apply element height to the images
+    var silexElement = $slider.closest('.editable-style');
+    var elementMinHeight = silexElement.css('height');
+    var elementWidth = silexElement.css('width');
+    $('#id_1635372583199_199 li .slide-image').css({
+      'height': elementMinHeight
+    });
+    
+
+    setTimeout(function(){
+      // use onswipe.js
+      // Fix #1127
+      window.onSwipe('left', function(){ $slider.data('unslider').next()})
+      window.onSwipe('right', function(){ $slider.data('unslider').prev()})
+    }, 0)
+  })();
+</script>
+</div></div><div data-silex-type="container-element" class="editable-style container-element silex-id-1635286702673-16 anchor1 page-term paged-element" data-silex-id="silex-id-1635286702673-16" style=""></div><a data-silex-type="image-element" class="editable-style image-element silex-id-1635287681305-28 page-term paged-element anchor-link" data-silex-id="silex-id-1635287681305-28" style="top: 717px; left: 1234px; width: 50px; height: 50px;" href="#!page-term#anchorD"><img src="Images/Habillage/flecheHaut.png"></a></section></section><section data-silex-type="container-element" class="editable-style section-element silex-id-1635156495092-0 page-1-re-page page-1ere paged-element" data-silex-id="silex-id-1635156495092-0"><div data-silex-type="container-element" class="editable-style container-element silex-id-1635156495095-1 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1635156495095-1" style=""><a data-silex-type="text-element" class="editable-style text-element silex-id-1635289851362-31 style-lettres-blanches anchor-link page-1ere paged-element" data-silex-id="silex-id-1635289851362-31" style="" href="#!page-1ere#anchor10"><div class="silex-element-content normal"><h1>CADRER - RECADRER</h1></div></a><div data-silex-type="text-element" class="editable-style text-element silex-id-1635324414175-7 silex-component-hamburger prevent-resizable prevent-auto-z-index" data-silex-id="silex-id-1635324414175-7" style=""><div class="silex-element-content normal"><style>.hamburger-menu_1635372583217_857 {position: absolute; z-index: 20;}.silex-editor .hamburger-menu_1635372583217_857 nav {left: -9999px;}.hamburger-menu_1635372583217_857 nav ul {margin-top: 80px;}.hamburger-menu_1635372583217_857 nav {opacity: 0; position: absolute; background-color: #ededed; transition: left 1s ease, height 0s ease 1s; left: -300px; width: 300px; height: 20px;}.hamburger-menu_1635372583217_857.open nav {opacity: 1; height: 100vh; left: 0; transition: left 1s ease, height 0s ease 0s;}.hamburger-menu_1635372583217_857 .nav-container {z-index: 10; position: absolute;}.hamburger-menu_1635372583217_857.open .nav-container {}.hamburger-menu_1635372583217_857 .hamburger-btn {z-index: 20; cursor: pointer; position: absolute;}.hamburger-menu_1635372583217_857 .hamburger-btn span {display: block; width: 30px; height: 5px; margin-bottom: 3px; position: relative; background-color: #000000; border: 1px solid #ffffff; border-radius: 3px; transition: border-color 0.1s ease-in,
+      opacity 0.1s ease-in,
+      transform 0.1s ease-in,
+      background 0.1s ease-in;}.hamburger-menu_1635372583217_857.open .hamburger-btn span {border-color: rgba(255, 255, 255, 0);}.hamburger-menu_1635372583217_857 .hamburger-btn span:first-child {transform-origin: 4px -2px;}.hamburger-menu_1635372583217_857.open .hamburger-btn span:first-child {transform: rotate(45deg) translate(7px, -4px);}.hamburger-menu_1635372583217_857.open .hamburger-btn span:nth-last-child(2) {opacity: 0;}.hamburger-menu_1635372583217_857 .hamburger-btn span:nth-child(3) {transform-origin: -11px 4px;}.hamburger-menu_1635372583217_857.open .hamburger-btn span:nth-child(3) {transform: rotate(-45deg) translate(0, 12px);}</style>
+<!-- inspired by https://codepen.io/erikterwan/pen/EVzeRP -->
+<div class="hamburger-menu_1635372583217_857 closed">
+    <div class="hamburger-btn ">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-container">
+      <div class="prevent-scale">
+        <nav role="navigation" class="">
+            <ul>
+            
+                <li><a href="#!page-1ere#anchor10" linktype="LinkTypeExternal">Intro : Casseur de pierres</a></li>
+            
+            </ul>
+        </nav>
+      </div>
+  </div>
+</div>
+<script>
+(function() {
+  var isOpen = false;
+  function close() {
+    isOpen = false;
+    $('.hamburger-menu_1635372583217_857').removeClass('open');
+    $('.hamburger-menu_1635372583217_857').addClass('closed');
+  }
+  function open() {
+    isOpen = true;
+    $('.hamburger-menu_1635372583217_857').addClass('open');
+    $('.hamburger-menu_1635372583217_857').removeClass('closed');
+  }
+  function toggle() {
+    if(isOpen) close();
+    else open();
+  }
+  var silexElement = $('.hamburger-menu_1635372583217_857').closest('.editable-style');
+  function move(data) {
+    var offset = silexElement.offset();
+    $('.hamburger-menu_1635372583217_857 .nav-container').css({
+      'transform': 'translate(' + (data.scrollLeft - (offset.left/data.scale)) + 'px, ' + (data.scrollTop - (offset.top/data.scale)) + 'px)'
+    });
+  }
+  $('.hamburger-menu_1635372583217_857 .hamburger-btn').click(function() { toggle(); });
+  $(document).on('silex.scroll silex.resize', function(e) {
+    close();
+    move(window.silex);
+  });
+  close();
+})();
+</script>
+</div></div></div></section><section data-silex-type="container-element" class="editable-style section-element silex-id-1635156552259-2 page-1-re-page page-1ere paged-element" data-silex-id="silex-id-1635156552259-2"><div data-silex-type="container-element" class="editable-style container-element silex-id-1635156552260-3 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1635156552260-3" style=""><div data-silex-type="text-element" class="editable-style text-element silex-id-1635290000873-33 style-corps-de-texte-carreaux page-1ere paged-element" data-silex-id="silex-id-1635290000873-33" style="" href="null"><div class="silex-element-content normal"><p><b>En se rendant à Chartres, un voyageur aperçoit sur le bord de la route un homme qui casse des cailloux à grands coups de maillet. Les gestes de l'homme sont empreints de rage, sa mine est sombre. Intrigué, le voyageur s'arrête et demande :</b><br><b>- « Que faites vous, Monsieur ? »</b><br><b>- « Vous voyez bien », lui répond l'homme, « je casse des pierres ». Malheureux, le pauvre homme ajoute d'un ton amer : « J'ai mal au dos, j'ai soif, j'ai faim. Mais je n'ai trouvé que ce travail pénible et stupide ».</b></p><p><b>Un peu plus loin sur le chemin, notre voyageur aperçoit un autre homme qui casse lui aussi des cailloux. Mais son attitude semble un peu différente. Son visage est plus serein, et ses gestes plus harmonieux.</b></p><br></div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635290436862-34 style-corps-de-texte-carreaux page-1ere paged-element" data-silex-id="silex-id-1635290436862-34" style="" href="null"><div class="silex-element-content normal"><p></p><p><b>- « Que faites vous, Monsieur ?», questionne une nouvelle fois l'homme.</b><br><b>- « Je suis casseur de pierre. C'est un travail dur, vous savez, mais il me permet de nourrir ma femme et mes enfants. »</b><br><b>Reprenant son souffle, il esquisse un léger sourire et ajoute : « Et puis allons bon, je suis au grand air, il y a sans doute des situations pire que la mienne ».</b></p><p><b>Plus loin, notre homme, rencontre un troisième casseur de pierre. Son attitude est totalement différente. Il affiche un franc sourire et il abat sa masse, avec enthousiasme, sur le tas de pierre. Pareille ardeur est belle à voir !</b><br><b>« Que faites-vous ? » demande le voyageur.</b><br><b>« Moi, répond l'homme, je bâtis une cathédrale ! </b><br><b> </b><br><b>La fable des casseurs de pierres est attribuée à Charles Péguy.</b></p></div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635290612436-36 page-1ere paged-element" data-silex-id="silex-id-1635290612436-36" style="" href="null"><div class="silex-element-content normal"><h1>LES CASSEURS DE PIERRES</h1></div></div><div data-silex-type="image-element" class="editable-style image-element silex-id-1635291724256-38 page-1ere paged-element" data-silex-id="silex-id-1635291724256-38" style=""><img src="Images/Habillage/CasseurDeCailloux.jpg"></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635291804910-39 style-corps-de-texte-gros page-1ere paged-element" data-silex-id="silex-id-1635291804910-39" style="" href="null"><div class="silex-element-content normal"><h1>INTRODUCTION</h1></div></div><div data-silex-type="container-element" class="editable-style container-element silex-id-1635292876077-45 page-1ere paged-element anchor10" data-silex-id="silex-id-1635292876077-45" style=""></div><div data-silex-type="image-element" class="editable-style image-element silex-id-1635321675602-1 page-1ere paged-element" data-silex-id="silex-id-1635321675602-1" style=""><img src="Images/1ere/Epict%C3%A8te.jpg"></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635292048302-40 style-corps-de-texte-carreaux page-1ere paged-element" data-silex-id="silex-id-1635292048302-40" style="" href="null"><div class="silex-element-content normal"> <h2>«<i>
+</i><i>Ce
+ne sont pas les choses qui troublent les hommes, </i><i>mais l'opinion
+qu'ils en ont</i>.
+»  <a href="https://fr.wikipedia.org/wiki/%C3%89pict%C3%A8te" title="Wikipedia">Epictète</a> <br></h2><br><h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br></h2>
+
+</div></div></div></section><section data-silex-type="container-element" class="editable-style section-element silex-id-1635156552451-4 page-1-re-page page-1ere paged-element" data-silex-id="silex-id-1635156552451-4"><div data-silex-type="container-element" class="editable-style container-element silex-id-1635156552452-5 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1635156552452-5" style=""><div data-silex-type="html-element" class="editable-style html-element silex-id-1635251216163-1 page-1-re-page page-1ere paged-element" data-silex-id="silex-id-1635251216163-1" style=""><div class="silex-element-content"><iframe scrolling="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1148274166&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true" width="100%" height="300" frameborder="no"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/user174022980" title="user174022980" target="_blank" style="color: #cccccc; text-decoration: none;">user174022980</a> · <a href="https://soundcloud.com/user174022980/hollande-rafales-16-02-2016" title="Hollande - Rafales 16 02 2015" target="_blank" style="color: #cccccc; text-decoration: none;">Hollande - Rafales 16 02 2015</a></div></div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635292299575-41 style-corps-de-texte-rouge page-1ere paged-element" data-silex-id="silex-id-1635292299575-41" style="" href="null"><div class="silex-element-content normal"> <h2><b>&nbsp;&nbsp; <u>CADRER</u>:
+c’est voir (ou présenter) les choses d’une certaine manière.</b></h2><h2><b>&nbsp;&nbsp; <u>R</u><u>ECADRER </u>:
+c’est
+faire changer la façon de cadrer (donc la façon de voir).</b></h2><h1><b></b></h1><p><b></b></p>
+
+</div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635292564466-42 style-corps-de-texte-carreaux page-1ere paged-element" data-silex-id="silex-id-1635292564466-42" style="" href="null"><div class="silex-element-content normal"><h2>Dans cet extrait Tom Sawyer nous offre un exemple de recadrage :</h2><span class="_wysihtml-temp-caret-fix" style="position: absolute; display: block; min-width: 1px; z-index: 99999;">﻿</span></div></div><div data-silex-type="image-element" class="editable-style image-element silex-id-1635322006025-3 page-1ere paged-element" data-silex-id="silex-id-1635322006025-3" style=""><img src="Images/1ere/tomsawyer@2x.jpeg"></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635320931507-0 style-corps-de-texte-carreaux page-1ere paged-element" data-silex-id="silex-id-1635320931507-0" style="" href="null"><div class="silex-element-content normal"><p>
+<b>Samedi après-midi, tous les
+garçons ont congé, sauf Tom Sawyer qui est puni et doit blanchir à
+la chaux trente mètres d'une clôture en bois haute de trois mètres.
+La vie lui paraît vide et l'existence n’est qu’un fardeau. Ce
+n'est pas seulement le travail, qui lui est intolérable, mais
+surtout la pensée que tous les autres garçons qui passeront par là
+se moqueront. de lui parce qu'il est obligé de travailler. A cet
+instant sombre et désespéré, explique Mark Twain, une inspiration
+surgit en lui! Rien moins qu’une grande et magnifique inspiration.
+Sans tarder, un garçon apparaît, justement celui, parmi tous les
+garçons, dont il craint le plus les sarcasmes.</b></p>
+
+<p><b>«
+Salut, vieux, on te fait travailler, hein ? » 
+</b></p>
+<p><b>«
+Ah, c’est toi, Ben! J'avais pas remarqué. » 
+</b></p>
+<p><b>«
+Dis donc — Moi, je vais me baigner, moi. T'aurais pas envie de
+venir? Mais non, voyons, tu préfères travailler, n'est-ce pas ?
+Voyons, bien sûr que tu préfères ! » 
+</b></p><br><p></p></div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635321792804-2 style-corps-de-texte-carreaux page-1ere paged-element" data-silex-id="silex-id-1635321792804-2" style="" href="null"><div class="silex-element-content normal"><p><b>Tom
+considéra le garçon un moment et déclara : 
+</b></p>
+<p><b>«
+Qu'est-ce que tu appelles travailler ? » 
+</b></p>
+<p><b>«
+Quoi, ça, c'est pas travailler ? » 
+</b></p>
+<p><b>Tom
+recommença à passer la chaux, et laissa tomber négligemment : 
+</b></p><p><b>«
+Peut-êt’, et peut-êt’ pas. Tout c'que j'en dis, c’est que Tom
+Sawyer ne s’en plaint pas. » 
+</b></p>
+<p><b>«
+Allons, allons! Tu n'vas pas faire croire que tu aimes ça?» 
+</b></p>
+<p><b>Le
+pinceau ne s'arrêta pas. 
+</b></p>
+<p><b>«Si
+j'aime ça? Et pourquoi que je l'aimerais pas? Est-ce qu’un garçon
+comme nous a l’occasion de passer une clôture à la chaux tous les
+jours ? » 
+</b></p>
+<p><b>L'affaire
+parut alors sous un jour nouveau. Ben s'arrêta de mordiller sa
+pomme. Tom donna à son pinceau un coquet mouvement de va-et-vient —
+fit un pas en arrière pour voir l'effet produit — ajouta une
+touche à quelques endroits — critiqua à nouveau l'effet — 
+</b></p>
+<p><b>tandis
+que Ben, observant chaque geste, se sentait de plus en plus
+intéressé, de plus en plus absorbé. Tout d'un coup, il dit : 
+</b></p>
+<p><b>«Eh,
+Tom, laisse-moi passer un peu de chaux.»</b></p>
+
+<br></div></div><div data-silex-type="container-element" class="editable-style container-element silex-id-1635323733009-6 page-1ere paged-element" data-silex-id="silex-id-1635323733009-6" style=""></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1635323237711-4 style-corps-de-texte-carreaux page-1ere paged-element" data-silex-id="silex-id-1635323237711-4" style="" href="null"><div class="silex-element-content normal"><h2><b>Vers
+la moitié de l'après-midi, la palissade a déjà trois couches de
+chaux et Tom a littéralement les poches pleines : les garçons, les
+uns après les autres, ont donné leurs trésors pour avoir le
+privilège de peindre une partie de la clôture. Tom a réussi à
+recadrer la notion de corvée pour en faire un plaisir qu’on doit
+payer, et tous ses amis ont accepté ce changement dans sa définition
+du réel.</b></h2></div></div></div></section><section data-silex-type="container-element" class="editable-style section-element silex-id-1635287923281-29 page-3eme paged-element" data-silex-id="silex-id-1635287923281-29"><div data-silex-type="container-element" class="editable-style container-element silex-id-1635287923285-30 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1635287923285-30"></div></section><section data-silex-type="container-element" class="editable-style section-element silex-id-1633222996652-31" data-silex-id="silex-id-1633222996652-31"><div data-silex-type="container-element" class="editable-style container-element silex-id-1633222996653-32 silex-element-content website-width prevent-draggable" data-silex-id="silex-id-1633222996653-32" style=""><div data-silex-type="text-element" class="editable-style text-element silex-id-1633378716305-0 style-bas-de-page" data-silex-id="silex-id-1633378716305-0" style="" href="null"><div class="silex-element-content normal"><p>Contact : philippe.munilla@educagri.fr<br></p></div></div><div data-silex-type="text-element" class="editable-style text-element silex-id-1633378773212-1 style-bas-de-page" data-silex-id="silex-id-1633378773212-1" style="" href="null"><div class="silex-element-content normal"><p>Site réalisé avec <a href="https://www.silex.me/" linktype="LinkTypeExternal">Silex.me</a><br></p></div></div><a data-silex-type="image-element" class="editable-style image-element silex-id-1633294257985-0" data-silex-id="silex-id-1633294257985-0" style="" href="https://www.formations-agrinature.com/"><img src="Images/Habillage/JMB_logo-blanc-new.jpg"></a></div></section></body></html>
